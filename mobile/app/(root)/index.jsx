@@ -113,7 +113,7 @@ export default function Page() {
             <FlatList
               style={{ marginTop: 10, height: 300 }}
               contentContainerStyle={{ paddingBottom: 20 }}
-              data={Transactions}
+              data={[...Transactions].reverse()}
               keyExtractor={(item) => item.id?.toString()}
               renderItem={({ item }) => (
                 <TransactionItem item={item} onDelete={handleDelete} />
