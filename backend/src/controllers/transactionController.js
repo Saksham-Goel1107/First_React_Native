@@ -3,8 +3,8 @@ import { sql } from "../config/db.js";
 export const getUserTransaction = async (req, res) => {
   try {
     const { userid } = req.params;
-    if (!userid || isNaN(userid)) {
-      res.status(400).json({ message: "Invalid user id" });
+    if (!userid) {
+      res.status(400).json({ message: "User ID is required" });
       return;
     }
     const transactions =
@@ -19,8 +19,8 @@ export const getUserTransaction = async (req, res) => {
 export const getUserTransactionSummary = async (req, res) => {
   try {
     const { userid } = req.params;
-    if (!userid || isNaN(userid)) {
-      return res.status(400).json({ message: "Invalid user id" });
+    if (!userid) {
+      return res.status(400).json({ message: "User ID is required" });
     }
     const balanceResult =
       await sql`select coalesce(sum(amount),0) as balance from transactions where user_id = ${userid}`;
