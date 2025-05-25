@@ -3,8 +3,11 @@ import dotenv from "dotenv";
 import { sql } from "./config/db.js";
 import rateLimiter from "./middleware/rateLimiter.js";
 import transactionsRoutes  from "./routes/transactionsRoutes.js";
+import job from "./config/cron.js";
 dotenv.config();
 const PORT = process.env.PORT || 3000;
+
+if(process.env.NODE_ENV === "production") job.start()
 
 const app = express();
 app.use(express.json());
@@ -26,8 +29,8 @@ async function initDB() {
   }
 }
 
-app.get("/health", (req, res) => {
-  res.send("Server is running...");
+app.get("/api/health", (req, res) => {
+  res.status(200).json({status: "ok", message: "Server is healthy"});
 });
 
 // Mount the transactions routes
