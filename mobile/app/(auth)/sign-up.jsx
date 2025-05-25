@@ -6,6 +6,7 @@ import { styles } from '@/assets/styles/auth.styles.js'
 import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '@/constants/colors'
 import { Image } from 'expo-image'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp()
@@ -13,16 +14,25 @@ export default function SignUpScreen() {
 
   const [emailAddress, setEmailAddress] = React.useState('')
   const [password, setPassword] = React.useState('')
+  const [confirmPassword, setConfirmPassword] = React.useState('')
   const [pendingVerification, setPendingVerification] = React.useState(false)
   const [code, setCode] = React.useState('')
   const [Error, setError] = React.useState("")
+  const [showPassword, setShowPassword] = React.useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false)
 
   // Handle submission of sign-up form
   const onSignUpPress = async () => {
     if (!isLoaded) return
 
-    // Start sign-up process using email and password provided
     try {
+      // Validate passwords match
+      if (password !== confirmPassword) {
+        setError("Passwords do not match");
+        return;
+      }
+
+      // Start sign-up process using email and password provided
       await signUp.create({
         emailAddress,
         password,
@@ -35,8 +45,11 @@ export default function SignUpScreen() {
       // and capture OTP code
       setPendingVerification(true)
     } catch (err) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
+      if (err.errors?.[0]?.message) {
+        setError(err.errors[0].message);
+      } else {
+        setError("An error occurred. Please try again.");
+      }
       console.error(JSON.stringify(err, null, 2))
     }
   }
@@ -89,54 +102,87 @@ export default function SignUpScreen() {
           onChangeText={(code) => setCode(code)}
         />
         <TouchableOpacity style={styles.button} onPress={onVerifyPress}>
-          <Text style={styles.buttonText}>Verify</Text>
+          <Text style={styles.buttonText}>Verify Email</Text>
         </TouchableOpacity>
       </View>
     )
   }
   return (
-    <View style={styles.container}>
-      <Image
-        source={require("../../assets/images/revenue-i2.png")}
-        style={styles.illustration}
-        contentFit="contain"
-      />
+    <KeyboardAwareScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }} extraScrollHeight={100} enableAutomaticScroll={true} enableOnAndroid={true}>
+      <View style={styles.container}>
+        <Image
+          source={require("../../assets/images/revenue-i2.png")}
+          style={styles.illustration}
+          contentFit="contain"
+        />
 
-      <Text style={styles.title}>Sign up</Text>
+        <Text style={styles.title}>Sign up</Text>
 
-      {Error && (
-        <View style={styles.errorContainer}>
-          <Ionicons name="warning-outline" size={20} color={COLORS.expense} />
-          <Text style={styles.errorText}>{Error}</Text>
-          <TouchableOpacity onPress={() => setError(null)}>
-            <Ionicons name="close-circle" size={20} color={COLORS.textLight} />
+        {Error && (
+          <View style={styles.errorContainer}>
+            <Ionicons name="warning-outline" size={20} color={COLORS.expense} />
+            <Text style={styles.errorText}>{Error}</Text>
+            <TouchableOpacity onPress={() => setError(null)}>
+              <Ionicons name="close-circle" size={20} color={COLORS.textLight} />
+            </TouchableOpacity>
+          </View>
+        )}
+
+        <TextInput
+          style={[styles.input, Error && styles.errorInput]}
+          autoCapitalize="none"
+          value={emailAddress}
+          placeholder="Enter email"
+          onChangeText={(email) => setEmailAddress(email)}
+        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={[styles.passwordInput, Error && styles.errorInput]}
+            value={password}
+            placeholder="Enter password"
+            secureTextEntry={!showPassword}
+            onChangeText={(password) => setPassword(password)}
+          />
+          <TouchableOpacity 
+            style={styles.eyeIcon}
+            onPress={() => setShowPassword(!showPassword)}
+          >
+            <Ionicons 
+              name={showPassword ? "eye-outline" : "eye-off-outline"} 
+              size={24} 
+              color={COLORS.textLight} 
+            />
           </TouchableOpacity>
         </View>
-      )}
-
-      <TextInput
-        style={[styles.input, Error && styles.errorInput]}
-        autoCapitalize="none"
-        value={emailAddress}
-        placeholder="Enter email"
-        onChangeText={(email) => setEmailAddress(email)}
-      />
-      <TextInput
-        style={[styles.input, Error && styles.errorInput]}
-        value={password}
-        placeholder="Enter password"
-        secureTextEntry={true}
-        onChangeText={(password) => setPassword(password)}
-      />
-      <TouchableOpacity style={styles.button} onPress={onSignUpPress}>
-        <Text style={styles.buttonText}>Continue</Text>
-      </TouchableOpacity>
-      <View style={styles.footerContainer}>
-        <Text style={styles.footerText}>Already have an account?</Text>
-        <Link href="/sign-in">
-          <Text style={styles.footerLink}>Sign in</Text>
-        </Link>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={[styles.passwordInput, Error && styles.errorInput]}
+            value={confirmPassword}
+            placeholder="Confirm password"
+            secureTextEntry={!showConfirmPassword}
+            onChangeText={(password) => setConfirmPassword(password)}
+          />
+          <TouchableOpacity 
+            style={styles.eyeIcon}
+            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            <Ionicons 
+              name={showConfirmPassword ? "eye-outline" : "eye-off-outline"} 
+              size={24} 
+              color={COLORS.textLight} 
+            />
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.button} onPress={onSignUpPress}>
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
+        <View style={styles.footerContainer}>
+          <Text style={styles.footerText}>Already have an account?</Text>
+          <Link href="/sign-in">
+            <Text style={styles.footerLink}>Sign in</Text>
+          </Link>
+        </View>
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   )
 }
