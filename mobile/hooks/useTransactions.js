@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 
 export const useTransactions = (userId) => {
-  const API_URL = process.env.EXPO_API_URL;
+  const API_URL = process.env.EXPO_PUBLIC_API_URL;
   const [Transactions, setTransactions] = useState([]);
   const [Summary, setSummary] = useState({
     balance: 0,
@@ -22,13 +22,13 @@ export const useTransactions = (userId) => {
       console.error("Error fetching transactions:", error);
       throw error;
     }
-  }, [userId]);
-
+  }, [userId, API_URL]);
   const fetchSummary = useCallback(async () => {
     try {
       const response = await fetch(`${API_URL}/transactions/summary/${userId}`);
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}, response: ${errorText}`);
       }
       const data = await response.json();
       setSummary({
@@ -40,7 +40,7 @@ export const useTransactions = (userId) => {
       console.error("Error fetching summary:", error);
       throw error;
     }
-  }, [userId]);
+  }, [userId, API_URL]);
 
   const loadData = useCallback(async () => {
     if (!userId) return;
