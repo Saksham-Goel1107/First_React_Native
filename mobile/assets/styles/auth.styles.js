@@ -12,13 +12,13 @@ export const styles = StyleSheet.create({
   illustration: {
     width: "100%",
     height: 310,
-    resizeMode: "contain",
+    marginBottom: 20,
   },
   title: {
     fontSize: 32,
     fontWeight: "bold",
     color: COLORS.text,
-    marginVertical: 15,
+    marginBottom: 24,
     textAlign: "center",
   },
   input: {
@@ -47,6 +47,20 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
   },
+  errorContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: COLORS.expenseLight,
+    padding: 10,
+    borderRadius: 8,
+    marginBottom: 15,
+    gap: 8,
+  },
+  errorText: {
+    color: COLORS.expense,
+    flex: 1,
+    fontSize: 14,
+  },
   footerContainer: {
     flexDirection: "row",
     justifyContent: "center",
@@ -54,12 +68,12 @@ export const styles = StyleSheet.create({
     gap: 8,
   },
   footerText: {
-    color: COLORS.text,
-    fontSize: 16,
+    color: COLORS.textLight,
+    fontSize: 14,
   },
-  linkText: {
+  footerLink: {
     color: COLORS.primary,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "600",
   },
   verificationContainer: {
@@ -101,11 +115,5 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     width: "100%",
-  },
-  errorText: {
-    color: COLORS.text,
-    marginLeft: 8,
-    flex: 1,
-    fontSize: 14,
   },
 });
