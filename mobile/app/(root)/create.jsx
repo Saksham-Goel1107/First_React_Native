@@ -60,7 +60,6 @@ const CreateScreen = () => {
     const [IsExpense, setIsExpense] = useState(true)
     const [IsLoading, setIsLoading] = useState(false)
     
-    // Amount validation - $1 million maximum transaction limit
     const parsedAmount = parseFloat(Amount);
     const isAmountTooLarge = !isNaN(parsedAmount) && parsedAmount > MAX_AMOUNT;
     
@@ -71,7 +70,7 @@ const CreateScreen = () => {
             return;
         }
         if (isAmountTooLarge) {
-            Alert.alert("Error", `Transaction amount cannot exceed $${MAX_AMOUNT.toLocaleString()}`);
+            Alert.alert("Error", `Transaction amount cannot exceed ${process.env.EXPO_PUBLIC_CURRENCY}${MAX_AMOUNT.toLocaleString()}`);
             return;
         }
         if (!SelectedCategory) return Alert.alert("Error", "Please Select a Transaction Category");
@@ -207,7 +206,7 @@ const CreateScreen = () => {
                 {/* Amount Input Card */}
                 <View style={styles.card}>
                     <View style={styles.amountContainer}>
-                        <Text style={styles.currencySymbol}>$</Text>
+                        <Text style={styles.currencySymbol}>{process.env.EXPO_PUBLIC_CURRENCY}</Text>
                         <TextInput
                             style={[styles.amountInput, isAmountTooLarge && {color: COLORS.expense}]}
                             placeholder="0.00"
@@ -225,7 +224,7 @@ const CreateScreen = () => {
                             textAlign: 'right',
                             fontStyle: 'italic'
                         }}>
-                            Amount cannot exceed ${MAX_AMOUNT.toLocaleString()}
+                            Amount cannot exceed {process.env.EXPO_PUBLIC_CURRENCY}{MAX_AMOUNT.toLocaleString()}
                         </Text>
                     )}
                 </View>

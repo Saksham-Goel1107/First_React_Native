@@ -1,5 +1,5 @@
 import { useSignIn } from '@clerk/clerk-expo'
-import { Link, useRouter } from 'expo-router'
+import { useRouter } from 'expo-router'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { Image } from 'expo-image'
@@ -103,13 +103,11 @@ export default function Page() {
         
         <TouchableOpacity style={styles.button} onPress={onSignInPress}>
           <Text style={styles.buttonText}>Sign In</Text>
-        </TouchableOpacity>
-
-        <View style={styles.footerContainer}>
+        </TouchableOpacity>        <View style={styles.footerContainer}>
           <Text style={styles.footerText}>Don&apos;t have an account?</Text>
-          <Link href="/sign-up">
+          <TouchableOpacity onPress={() => router.replace('/sign-up')}>
             <Text style={styles.footerLink}>Sign up</Text>
-          </Link>
+          </TouchableOpacity>
         </View>
       </View>
     </KeyboardAwareScrollView>

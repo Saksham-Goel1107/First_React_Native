@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { useSignUp } from '@clerk/clerk-expo'
-import { Link, useRouter } from 'expo-router'
+import { useRouter } from 'expo-router'
 import { styles } from '@/assets/styles/auth.styles.js'
 import { Ionicons } from '@expo/vector-icons'
 import { COLORS } from '@/constants/colors'
@@ -15,7 +15,7 @@ export default function SignUpScreen() {
   const [emailAddress, setEmailAddress] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [confirmPassword, setConfirmPassword] = React.useState('')
-  const [pendingVerification, setPendingVerification] = React.useState(false)
+  const [pendingVerification, setPendingVerification] = React.useState(false)  
   const [code, setCode] = React.useState('')
   const [Error, setError] = React.useState("")
   const [showPassword, setShowPassword] = React.useState(false)
@@ -175,12 +175,17 @@ export default function SignUpScreen() {
         </View>
         <TouchableOpacity style={styles.button} onPress={onSignUpPress}>
           <Text style={styles.buttonText}>Sign Up</Text>
-        </TouchableOpacity>
-        <View style={styles.footerContainer}>
+        </TouchableOpacity>        <View style={styles.footerContainer}>
           <Text style={styles.footerText}>Already have an account?</Text>
-          <Link href="/sign-in">
+          <TouchableOpacity onPress={() => router.replace('/sign-in')}>
             <Text style={styles.footerLink}>Sign in</Text>
-          </Link>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.footerContainer}>
+          <Text style={styles.footerText}>View Consent Screen</Text>
+          <TouchableOpacity onPress={() => router.replace('/')}>
+            <Text style={styles.footerLink}>Click Here</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </KeyboardAwareScrollView>

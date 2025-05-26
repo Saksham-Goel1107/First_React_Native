@@ -42,7 +42,7 @@ export const TransactionItem = ({ item, onDelete }) => {
                             { color: isIncome ? COLORS.income : COLORS.expense },
                         ]}
                     >
-                        {isIncome ? "+" : "-"}${Math.abs(parseFloat(item.amount)).toFixed(2)}
+                        {isIncome ? "+" : "-"}{process.env.EXPO_PUBLIC_CURRENCY}{Math.abs(parseFloat(item.amount)).toFixed(2)}
                     </Text>
                     <Text style={styles.transactionDate}>
                         {formatDate(item.created_at)}

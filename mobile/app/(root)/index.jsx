@@ -62,8 +62,7 @@ export default function Page() {
               <Text style={styles.usernameText}>{user?.emailAddresses[0]?.emailAddress.split("@")[0]}</Text>
             </View>
           </View>
-          <View style={styles.headerRight}>
-            <TouchableOpacity style={styles.addButton} onPress={() => router.push('/create')}>
+          <View style={styles.headerRight}>            <TouchableOpacity style={styles.addButton} onPress={() => router.push('/(root)/create')}>
               <Ionicons name="add" size={20} color="#FFF" />
               <Text style={styles.addButtonText}>Add</Text>
             </TouchableOpacity>
@@ -102,8 +101,7 @@ export default function Page() {
                   borderRadius: 20,
                   flexDirection: 'row',
                   alignItems: 'center'
-                }}
-                onPress={() => router.push('/create')}
+                }}                onPress={() => router.push('/(root)/create')}
               >
                 <Ionicons name="add-circle-outline" size={18} color="#FFF" />
                 <Text style={{ color: '#FFF', marginLeft: 5, fontWeight: '500' }}>Add Transaction</Text>

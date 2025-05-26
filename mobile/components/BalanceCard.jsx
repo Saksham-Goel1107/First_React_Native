@@ -10,7 +10,7 @@ const BalanceCard = ({ summary }) => {
         <View style={styles.balanceCard}>
             <Text style={styles.balanceTitle}>Total Balance</Text>
             <Text style={[styles.balanceAmount, { color: balanceColor }]}>
-                ${balance.toFixed(2)}
+                {process.env.EXPO_PUBLIC_CURRENCY}{balance.toFixed(2)}
             </Text>
             <View style={styles.balanceStats}>
                 <View style={[styles.balanceStatItem, cardStyles.statColumn]}>
@@ -20,7 +20,7 @@ const BalanceCard = ({ summary }) => {
                         numberOfLines={1} 
                         adjustsFontSizeToFit={true}
                     >
-                        +${parseFloat(summary?.income || 0).toFixed(2)}
+                        +{process.env.EXPO_PUBLIC_CURRENCY}{parseFloat(summary?.income || 0).toFixed(2)}
                     </Text>
                 </View>
                 <View style={[styles.balanceStatItem, styles.statDivider]} />
@@ -31,7 +31,7 @@ const BalanceCard = ({ summary }) => {
                         numberOfLines={1}
                         adjustsFontSizeToFit={true}
                     >
-                        -${Math.abs(parseFloat(summary?.expense || 0)).toFixed(2)}
+                        -{process.env.EXPO_PUBLIC_CURRENCY}{Math.abs(parseFloat(summary?.expense || 0)).toFixed(2)}
                     </Text>
                 </View>
             </View>
